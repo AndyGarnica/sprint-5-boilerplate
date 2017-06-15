@@ -1,33 +1,32 @@
-var api ={
-  url: 'http://examen-laboratoria-sprint-5.herokuapp.com/topics/'
+var api = {
+  url: 'http://examen-laboratoria-sprint-5.herokuapp.com/topics'
 };
 
-var contenedorTemas= $("#mostarTema");
+var $newTopics = $("#newTopics");
 
-var cargarPagina = function () {
-  cargarTemas();
-};
-
-var cargarTemas = function (){
-  $.getJSON(api.url, function(temas){
-    temas.forEach(crearTemas);
+var cargarTopics = function () {
+  $.getJSON(api.url, function (topics) {
+    topics.forEach(function (topic) {
+      crearTopic(topic);
+    });
   });
 };
 
-var crearTemas = function (tema){
-  var plantillaFinal= " ";
-  plantillaFinal += plantillaTema.replace('__temaF__', tema.content)
-  .replace('__autor__', tema.author_name)
-  .replace('__respuesta__', tema.responses_count);
-  contenedorTemas.append(plantillaFinal); // para mostrar
-console.log(tema);
+var crearTopic = function(topic){
+      var nombre = topic.author_name;
+      var contenido = topic.content;
+      var id = topic._id;
 
+      var $tr = $("<tr />");
+      var $nombreTd = $("<td />");
+      $nombreTd.text(nombre);
+      var $estadoTd = $("<td />");
+      $estadoTd.text(contenido);
+
+      $tr.append($nombreTd);
+      $tr.append($estadoTd);
+      $newTopics.append($tr);
 };
 
-var plantillaTema = '<tr>' +
-    '<td>__temaF__</td>' +
-    '<td>__autor__</td>' +
-    '<td>__respuesta__</td>' +
-  '</tr>' ;
 
-$(document).ready(cargarPagina);
+$(document).ready(cargarTopics);
